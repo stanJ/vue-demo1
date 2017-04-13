@@ -12,7 +12,7 @@
 </template>
 <script>
 export default {
-	name:'apphead'
+	name:'app-head'
 }
 </script>
 <style>

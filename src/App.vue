@@ -1,31 +1,23 @@
 <template>
   <div id="app">
-    <AppHead></AppHead>
-    <img src="./assets/logo.png">
-    <p>
-    	<router-link to="/">Go to Hello</router-link>
-    	<router-link to="/foo">Go to Foo</router-link>
-    	<router-link to="/bar">Go to Bar</router-link>
-    </p>
+    <app-head></app-head>
+    <app-left></app-left>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import AppHead from '@/components/AppHead'
+import AppHead from '@/views/AppHead'
+import AppLeft from '@/views/AppLeft'
 export default {
   name: 'app',
-  components: AppHead
+  components: {
+  	AppHead,
+  	AppLeft
+  }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
