@@ -1,5 +1,9 @@
 import $ from 'jquery'
 export default {
+	pageConfig:{
+		pageNum: 8,
+		pageNumMax: 1000,
+	},
 	isAry:function(obj){
 		return Object.prototype.toString.call(obj) === '[object Array]'; 
 	},
@@ -23,5 +27,26 @@ export default {
 			ul.children("li").removeClass("active");
 			li.addClass("active");
 		}
+	},
+	formatQueryParams:function(params){
+		var obj = {
+			nextPage:0,
+			pageSize:this.pageConfig.pageNum,
+			status:1,
+			sortData:"[{property:'modifyTime',direction:'DESC'}]",		
+			jsonFilter:"{}"
+		}
+		return $.extend({},obj,params);
+	},
+	formatSelectData:function(params){
+		var id = params.id;
+		var text = params.text;
+		var data = params.data;
+		return $.map(data,function(d){
+			var obj = {};
+			obj.id = d[id];
+			obj.text = d[text];
+			return obj;
+		})
 	},
 }

@@ -9,19 +9,26 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      path: '/',
+      redirect: '/index',
+    },
+    {
+      path: '/index',
+      name: 'index',
+      component: Index,
+      children: [
+      	
+      ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
       path: '/resource_manage',
       name: 'resource_manage',
       component: ResourceManage
     },
-    {
-      path: '/foo',
-      name: 'Foo',
-      component: Foo
-    },
-    {
-      path: '/bar',
-      name: 'Bar',
-      component: Bar
-    }
   ]
 })

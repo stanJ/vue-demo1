@@ -30,6 +30,8 @@
 	import QueryGroup from '@/components/QueryGroup'
 	import ControlGroup from '@/components/ControlGroup'
 	import SuiSelect from '@/components/SuiSelect'
+	import { resourceService, publicService } from '@/services/Service'
+	import Util from '@/lib/util/util'
 	export default {
 		name:'resource-manage',
 		data () {
@@ -43,6 +45,52 @@
 					province:'',
 					city:'',
 				}
+			}
+		},
+		created () {
+			this.fetchData();
+		},
+		methods: {
+			fetchData () {
+				var vm = this;
+				resourceService.fetchCategoryList()
+				.then((res) => {
+					if(res.success){
+						var d = res.data.object;
+						vm.categories = Util.formatSelectData({
+							id:'tid',
+							text:'name',
+							data:d.content,
+						});
+					}
+				})
+				
+				publicService.fetchProvince()
+				.then((res) => {
+					if(res.success){
+						vm.provinces = Util.formatSelectData({
+							id:'code',
+							text:'value',
+							data:res.data,
+						});
+					}
+				})
+			},
+		},
+		watch:{
+			'queryParams.province':function(value){
+				var vm = this;
+				publicService.fetchCity(value)
+				.then((res) => {
+					if(res.success){
+						vm.cities = Util.formatSelectData({
+							id:'code',
+							text:'value',
+							data:res.data,
+						});
+					}
+				})
+				this.queryParams.city = '';
 			}
 		},
 		components: {
