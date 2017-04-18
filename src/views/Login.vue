@@ -11,19 +11,19 @@
 		</div>
 		<div class="login-right">
 			<div class="login-wrapper">
-				<div class="login-text">登录</div>
-				<form class="sui-form fs16" id="form-login">
+				<div class="login-text">登录</div>				
+				<form class="sui-form fs16" id="form-login" @submit.prevent>
 				  <div class="control-group login-input clearfix">
 				  	<label class="control-label"></label>
 					<div class="input-wrapper login-account">
-						<input type="text" placeholder="账号" class="fs16" name="account">
+						<input type="text" placeholder="账号" class="fs16" v-model="loginForm.account" name="account">
 					</div>
 				    	
 				  </div>
 				  <div class="control-group login-input clearfix">
 				  	<label class="control-label"></label>
 				  	<div class="input-wrapper login-pw">
-				    		<input type="password" placeholder="密码" class="fs16" name="pw">
+				    		<input type="password" placeholder="密码" class="fs16" v-model="loginForm.pw" name="pw">
 				    	</div>
 				  </div>
 				  <div class="control-group login-input clearfix yzm-group" >
@@ -47,7 +47,79 @@
 </template>
 
 <script>
+//	import '@/assets/css/login.css'
+	import router from '@/router'
+	import { loginService } from '@/services/Service'
+	var $ = require('jquery')
+	window.jQuery = $;
+	require('@/lib/sui/sui.js')
+	export default {
+		name: 'login',
+		data () {
+			return {
+				loginForm: {
+					account: '',
+					pw: ''
+				},
+				isValid:false
+			}
+		},
+		mounted () {
+			this.validate();
+		},
+		methods: {
+			toIndex () {
+				router.push('/')
+			},
+			validate () {
+				var vm = this;
+				$("#form-login").validate({
+					rules:{
+						account:{
+							required:true,
+						},
+						pw:{
+							required:true,
+							password:true,
+						},
+						yzm:{
+							required:true,
+						},
+					},
+					success:function(){
+						vm.isValid = true;
+						return false;
+					},
+				})
+			},
+			signIn () {
+				loginService.signIn({
+					j_username:this.loginForm.account,
+					j_password:this.loginForm.pw,
+				})
+				.then((res) => {
+					if(!res.success) return false;
+					var response = res.data;
+					if(response.authentication.authenticated==false){
+						return;
+					}
+					sessionStorage.setItem('t',response.token);
+					sessionStorage.setItem('userinfo',JSON.stringify(response));
+					router.push('/')
+				})
+			}
+		},
+		watch: {
+			isValid (value) {
+				if(value){
+					this.signIn();
+				}
+				this.isValid = false;
+				console.log(this.isValid)
+			}
+		}
+	}
 </script>
 
-<style>
+<style src="@/assets/css/login.css" scoped>
 </style>

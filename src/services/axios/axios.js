@@ -1,6 +1,8 @@
 import axios from 'axios'
 import {api} from './config'
+import router from '@/router'
 require('es6-promise').polyfill();
+
 var noToken = {
 	'/j_spring_security_check':"",
 	'/dict/constant':"",
@@ -13,21 +15,16 @@ var instance = axios.create({
 })
 instance.interceptors.request.use(function (config) {
 	if(noToken[config.url]==undefined){
-//		if(!sessionStorage.getItem("t")){
-//			sessionStorage.setItem("message","登录过期,请重新登录");
-////			utilObj.navigate('login');
-//			console.log('login')
-//		}else{
-//			if(!config.params){
-//				config.params = {};
-//			}
-//			config.params.token = sessionStorage.getItem("t") 
-//		}
-		if(!config.params){
-			config.params = {};
+		if(!sessionStorage.getItem("t")){
+			sessionStorage.setItem("message","登录过期,请重新登录");
+			router.push('/login')
+			return false;
+		}else{
+			if(!config.params){
+				config.params = {};
+			}
+			config.params.token = sessionStorage.getItem("t") 
 		}
-		config.params.token = 'QrAe9lcHkMyrymS5VFE+LA=='
-		
 	}
 	return config;
 }, function (error) {

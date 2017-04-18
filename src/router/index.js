@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import AppHead from '@/views/AppHead'
+import AppLeft from '@/views/AppLeft'
 import ResourceManage from '@/views/ResourceManage'
-import Foo from '@/components/Foo'
-import Bar from '@/components/Bar'
+import Login from '@/views/Login'
+import Index from '@/views/Index'
 
 Vue.use(Router)
 
@@ -10,15 +12,16 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/index',
+      redirect: '/index'
     },
     {
       path: '/index',
       name: 'index',
-      component: Index,
-      children: [
-      	
-      ]
+      components: {
+      	default: Index,
+      	appLeft: AppLeft,
+      	appHead: AppHead
+      },
     },
     {
       path: '/login',
@@ -28,7 +31,11 @@ export default new Router({
     {
       path: '/resource_manage',
       name: 'resource_manage',
-      component: ResourceManage
+      components: {
+      	default: ResourceManage,
+      	appLeft: AppLeft,
+      	appHead: AppHead
+      }
     },
   ]
 })

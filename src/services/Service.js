@@ -1,5 +1,6 @@
 import axios from './axios/axios'
 import Util from '@/lib/util/util'
+
 class ResourceService {
 	fetchCategoryList (jsonFilter) {
 		return axios({
@@ -11,6 +12,7 @@ class ResourceService {
 		})
 	}
 }
+
 class PublicService {
 	fetchProvince () {
 		return axios({
@@ -25,9 +27,24 @@ class PublicService {
 		})
 	}
 }
+
+class LoginService {
+	signIn (params) {
+		return axios({
+			url: '/j_spring_security_check',
+			method: 'post',
+			params: params,
+			headers: {
+				"X-Ajax-call": "true"
+			}
+		})
+	}
+}
 var resourceService = new ResourceService();
 var publicService = new PublicService();
+var loginService = new LoginService();
 export {
 	resourceService,
 	publicService,
+	loginService
 }
