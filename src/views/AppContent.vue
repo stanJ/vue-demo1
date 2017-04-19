@@ -14,7 +14,9 @@
 		
 		<div class="sui-form form-horizontal">
 			<slot name="content"></slot>
+			
 		</div>
+		<slot></slot>
 	</div>
 </template>
 

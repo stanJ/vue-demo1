@@ -2,13 +2,20 @@ import axios from './axios/axios'
 import Util from '@/lib/util/util'
 
 class ResourceService {
-	fetchCategoryList (jsonFilter) {
+	fetchCategoryList () {
 		return axios({
 			url: '/m/expertCategory/findExpertCategoryEQStatusPage',
 			method: 'post',
 			params: Util.formatQueryParams({
 				pageSize: Util.pageConfig.pageNumMax
 			})
+		})
+	}
+	fetchExpert (params) {
+		return axios({
+			url: '/m/expert/findExpertEQStatusPage',
+			method: 'post',
+			params: Util.formatQueryParams(params)
 		})
 	}
 }

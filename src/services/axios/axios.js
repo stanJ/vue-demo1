@@ -13,23 +13,6 @@ var instance = axios.create({
 	baseURL:api.baseUrl,
 	
 })
-instance.interceptors.request.use(function (config) {
-	if(noToken[config.url]==undefined){
-		if(!sessionStorage.getItem("t")){
-			sessionStorage.setItem("message","登录过期,请重新登录");
-			router.push('/login')
-			return false;
-		}else{
-			if(!config.params){
-				config.params = {};
-			}
-			config.params.token = sessionStorage.getItem("t") 
-		}
-	}
-	return config;
-}, function (error) {
-	return Promise.reject(error)
-})
 instance.interceptors.response.use(function (response) {
 	var data = response.data;
 	if(data && data.code==0 && data.message){
@@ -54,4 +37,23 @@ instance.interceptors.response.use(function (response) {
 	console.log(error)
 	return Promise.reject(error);
 })
-export default instance
+export default function (config) {
+	if(noToken[config.url]==undefined){
+		if(!sessionStorage.getItem("t")){
+			sessionStorage.setItem("message","登录过期,请重新登录");
+			router.push('/login')
+			return new Promise(function(resolve,reject){
+				resolve({
+					success: false
+				})
+			});
+		}else{
+			if(!config.params){
+				config.params = {};
+			}
+			config.params.token = sessionStorage.getItem("t") 
+		}
+	}
+	return instance(config)
+	
+}

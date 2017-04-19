@@ -47,7 +47,6 @@
 </template>
 
 <script>
-//	import '@/assets/css/login.css'
 	import router from '@/router'
 	import { loginService } from '@/services/Service'
 	var $ = require('jquery')

@@ -49,4 +49,11 @@ export default {
 			return obj;
 		})
 	},
+	getCategoryCN (data) {
+		var obj = {};
+		$.each(data,function(i,val){
+			obj[val.tid] = val.name;
+		})
+		return obj;
+	}
 }
