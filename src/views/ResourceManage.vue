@@ -8,18 +8,35 @@
 		</div>
 		<div slot="content" class="bszk-block clearfix no-pb">
 			<query-group id="query-expert">
-				<control-group text="专家名称">
-					<input type="text" class="input-medium" v-model="queryParams.name">
+				<control-group 
+					text="专家名称">
+					<input type="text" class="input-medium" 
+						v-model="queryParams.name">
 				</control-group>
-				<control-group text="专家类别">
-					<sui-select :options="categories" v-model="queryParams.category"></sui-select>
+				<control-group 
+					text="专家类别">
+					<sui-select 
+						:options="categories" 
+						v-model="queryParams.category">
+					</sui-select>
 				</control-group>
-				<control-group text="居住地">
-					<sui-select :options="provinces" v-model="queryParams.province"></sui-select>
-					<sui-select :options="cities" v-model="queryParams.city"></sui-select>
+				<control-group 
+					text="居住地">
+					<sui-select 
+						:options="provinces" 
+						v-model="queryParams.province">
+					</sui-select>
+					<sui-select 
+						:options="cities" 
+						v-model="queryParams.city">
+					</sui-select>
 				</control-group>
 				<li>
-					<button type="button" @click="search" :disabled="isDisabled" class="sui-btn btn-primary" style="margin-left:17px;" id="btn_query1">查询</button>
+					<button type="button" class="sui-btn btn-primary" style="margin-left:17px;" id="btn_query1"
+						@click="search" 
+						:disabled="isDisabled">
+						查询
+					</button>
 				</li>
 				<li class="fr addbtn" style="display: none;">
 					<button type="button" class="sui-btn btn-primary" style="margin-left:22px;" id="btn_add1">添加</button>
@@ -57,22 +74,24 @@
 					width="200px"
 					align="center">
 					<template scope="scope">
-						<el-button @click="check(scope.$index,scope.row)" type="text" class="bs-default">查看</el-button>
-						<el-button @click="modify(scope.$index,scope.row)" type="text">修改</el-button>
-						<el-button @click="deleteRow(scope.$index,scope.row)" type="text" class="bs-danger">删除</el-button>
+						<el-button 
+							@click="check(scope.$index,scope.row)" 
+							type="text" 
+							class="bs-default">
+							查看
+						</el-button>
+						<el-button 
+							@click="modify(scope.$index,scope.row)" 
+							type="text">
+							修改
+						</el-button>
+						<el-button 
+							@click="deleteRow(scope.$index,scope.row)" 
+							type="text" class="bs-danger">
+							删除
+						</el-button>
 					</template>
 				</el-table-column>
-				<!--<el-table-column 
-					label="操作" 
-					prop="name" 
-					width="200px">
-					<template scope="scope">
-						<el-button @click="check(scope.$index,scope.row)" type="text" size="small">查看</el-button>
-						<el-button @click="modify(scope.$index,scope.row)" type="text" size="small">修改</el-button>
-						<el-button @click="deleteRow(scope.$index,scope.row)" type="text" >删除</el-button>
-					</template>
-				</el-table-column>-->
-				
 			</el-table>
 			<el-pagination
 				@current-change="handleCurChange"
@@ -94,6 +113,7 @@
 	import TableColumn from '@/components/TableColumn'
 	import { resourceService, publicService } from '@/services/Service'
 	import Util from '@/lib/util/util'
+	import router from '@/router'
 	export default {
 		name:'resource-manage',
 		data () {
@@ -177,6 +197,7 @@
 			},
 			search () {
 				this.isDisabled = true;
+				this.pagination.curPage = 1;
 				this.loadExpertList()
 			},
 			check (index,row) {
@@ -184,12 +205,32 @@
 				console.log(row)
 			},
 			modify (index,row) {
-				console.log(index)
-				console.log(row)
+				console.log(row.tid)
+				router.push({
+					name: 'resource_modify',
+					params: {
+						tid: row.tid
+					}
+				})
 			},
 			deleteRow (index,row) {
-				console.log(index)
-				console.log(row)
+				var vm = this;
+				this.$confirm('请确认是否删除该专家？','提示',{
+					type: 'warning'
+				})
+				.then(() => {
+					resourceService.deleteExpert(row.tid)
+					.then((res) => {
+						if(res.success){
+							this.$message({
+								type: 'success',
+								message: '删除成功!'
+							})
+						}
+						vm.loadExpertList()
+					})
+				})
+				
 			},
 			handleCurChange (val) {
 				this.pagination.curPage = val;

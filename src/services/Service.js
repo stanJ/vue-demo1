@@ -18,6 +18,16 @@ class ResourceService {
 			params: Util.formatQueryParams(params)
 		})
 	}
+	deleteExpert (tid) {
+		return axios({
+			url: '/m/expert/operateExpertById',
+			method: 'post',
+			params: {
+				modelId:tid,
+				status:3
+			}
+		})
+	}
 }
 
 class PublicService {

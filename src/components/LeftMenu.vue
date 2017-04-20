@@ -28,9 +28,14 @@
 				}else{
 					href = value;
 				}
-				return href;
+				var str = "{name:'"+href+"'}";
+				return str;
+//				var obj = {
+//					name: href
+//				}
+//				return JSON.stringify(obj);
 			}
-		},
+		}
 	}
 </script>
 

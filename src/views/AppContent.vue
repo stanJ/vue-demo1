@@ -3,7 +3,9 @@
 		<div class="bszk-breadcrumb-wrapper">
 			<i class="bszk-icon-home"></i>
 			<ul class="sui-breadcrumb">
-			  <li><a href="#" data-href="index">首页</a></li>
+			  <li>
+			  	<router-link to="/">首页</router-link>
+			  </li>
 			  <slot name="curTitle"></slot>
 			</ul>
 			<slot name="num"></slot>

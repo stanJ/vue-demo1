@@ -2,8 +2,8 @@
   <div id="app">
     <!--<app-head></app-head>
     <app-left></app-left>-->
-    <router-view name="appHead"></router-view>
-    <router-view name="appLeft"></router-view>
+    <!--<router-view name="appHead"></router-view>
+    <router-view name="appLeft"></router-view>-->
     <router-view></router-view>
   </div>
 </template>
