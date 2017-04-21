@@ -6,6 +6,7 @@ import ElementUI from 'element-ui'
 import '@/assets/theme/index.css'
 import App from './App'
 import router from './router'
+import '@/filters'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)

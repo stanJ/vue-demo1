@@ -13,11 +13,7 @@
 		<slot name="mainTitle">
 			<div class="bszk-title">查询操作</div>
 		</slot>
-		
-		<div class="sui-form form-horizontal">
-			<slot name="content"></slot>
-			
-		</div>
+		<slot name="content"></slot>
 		<slot></slot>
 	</div>
 </template>

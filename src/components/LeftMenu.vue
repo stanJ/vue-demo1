@@ -1,7 +1,7 @@
 <template>
 	<router-link
 		class="left-menu-li"
-		:to="href" 
+		:to="{name:href}" 
 		tag="li" 
 		active-class="selected">
 		<div class="left-menu-icon" :class="menu.class"></div>							
@@ -28,8 +28,9 @@
 				}else{
 					href = value;
 				}
-				var str = "{name:'"+href+"'}";
-				return str;
+				return href;
+//				var str = "{name:'"+href+"'}";
+//				return str;
 //				var obj = {
 //					name: href
 //				}

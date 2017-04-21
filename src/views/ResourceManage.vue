@@ -6,43 +6,47 @@
 			<span class="head-num">{{pagination.totalElements}}</span>
 			<span>个</span>
 		</div>
-		<div slot="content" class="bszk-block clearfix no-pb">
-			<query-group id="query-expert">
-				<control-group 
-					text="专家名称">
-					<input type="text" class="input-medium" 
-						v-model="queryParams.name">
-				</control-group>
-				<control-group 
-					text="专家类别">
-					<sui-select 
-						:options="categories" 
-						v-model="queryParams.category">
-					</sui-select>
-				</control-group>
-				<control-group 
-					text="居住地">
-					<sui-select 
-						:options="provinces" 
-						v-model="queryParams.province">
-					</sui-select>
-					<sui-select 
-						:options="cities" 
-						v-model="queryParams.city">
-					</sui-select>
-				</control-group>
-				<li>
-					<button type="button" class="sui-btn btn-primary" style="margin-left:17px;" id="btn_query1"
-						@click="search" 
-						:disabled="isDisabled">
-						查询
-					</button>
-				</li>
-				<li class="fr addbtn" style="display: none;">
-					<button type="button" class="sui-btn btn-primary" style="margin-left:22px;" id="btn_add1">添加</button>
-				</li>
-			</query-group>
+		<div slot="content" class="sui-form form-horizontal">
+			<div class="bszk-block clearfix no-pb">
+				<query-group id="query-expert">
+					<control-group 
+						text="专家名称">
+						<input type="text" class="input-medium" 
+							v-model="queryParams.name">
+					</control-group>
+					<control-group 
+						text="专家类别">
+						<sui-select 
+							:options="categories" 
+							v-model="queryParams.category">
+						</sui-select>
+					</control-group>
+					<control-group 
+						text="居住地">
+						<sui-select 
+							:options="provinces" 
+							v-model="queryParams.province">
+						</sui-select>
+						<sui-select 
+							:options="cities" 
+							v-model="queryParams.city">
+						</sui-select>
+					</control-group>
+					<li>
+						<button type="button" class="sui-btn btn-primary" style="margin-left:17px;" id="btn_query1"
+							@click="search" 
+							:disabled="isDisabled">
+							查询
+						</button>
+					</li>
+					<li class="fr addbtn" style="display: none;">
+						<button type="button" class="sui-btn btn-primary" style="margin-left:22px;" id="btn_add1">添加</button>
+					</li>
+				</query-group>
+			</div>
+		
 		</div>
+		
 		<div class="bszk-block">
 			<el-table :data="tableData" border class="table-wrapper" >
 				<el-table-column 
