@@ -19,7 +19,7 @@
 				<el-form-item label="联系方式" prop="contact">
 					<el-input v-model="expertForm.contact"></el-input>
 				</el-form-item>
-				<el-form-item label="居住地" prop="contact">
+				<el-form-item label="居住地">
 					<el-form-item prop="province">
 						<el-select v-model="expertForm.province" placeholder="请选择">
 							<el-option
@@ -39,6 +39,33 @@
 						</el-select>
 					</el-form-item>
 				</el-form-item>
+				<el-form-item label="性别" prop="gender">
+					<el-select v-model="expertForm.gender" placeholder="请选择">
+						<el-option
+							v-for="item in sex"
+							:label="item.value"
+							:value="item.code"
+							:key="item.code"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="证件号" prop="certificate">
+					<el-input v-model="expertForm.certificate"></el-input>
+				</el-form-item>
+				<el-form-item label="邮箱" prop="email">
+					<el-input v-model="expertForm.email"></el-input>
+				</el-form-item>
+				<el-form-item label="微信" prop="wechat">
+					<el-input v-model="expertForm.wechat"></el-input>
+				</el-form-item>
+				<el-form-item label="专家类别" prop="category" class="category">
+					<button-group v-model="expertForm.category"></button-group>
+				</el-form-item>
+				<el-form-item label="其他" prop="otherCategory">
+					<el-input v-model="expertForm.otherCategory"></el-input>
+				</el-form-item>
+				<el-form-item label="社会职务" prop="socialFunction">
+					<input-group v-model="expertForm.socialFunction"></input-group>
+				</el-form-item>
 			</el-form>
 		
 		</div>
@@ -46,7 +73,10 @@
 </template>
 
 <script>
+	import moment from 'moment'
 	import AppContent from '@/views/AppContent'
+	import ButtonGroup from '@/components/ButtonGroup'
+	import InputGroup from '@/components/InputGroup'
 //	import QueryGroup from '@/components/QueryGroup'
 //	import ControlGroup from '@/components/ControlGroup'
 //	import SuiSelect from '@/components/SuiSelect'
@@ -63,28 +93,38 @@
 					birth: '',
 					contact: '',
 					province: '',
-					city: ''
+					city: '',
+					gender: '',
+					certificate: '',
+					email: '',
+					wechat: '',
+					category: '',
+					otherCategory: '',
+					socialFunction: '',
 				},
 				provinces: [],
 				cities: [],
+				sex: {},
 			}
 		},
 		computed: {
 			formattedBirth: {
 				get () {
 					var value = this.expertForm.birth
-					var newVal = '';
 					if(value){
-						newVal = value.slice(0,10)
+						value = value.slice(0,10)
+					}else{
+						value = ''
 					}
-					return newVal;
+					return value;
 				},
 				set (newVal) {
-					var val = '';
 					if(newVal){
-						val = newVal + ' 00:00:00'
+						newVal = moment(newVal).format('YYYY-MM-DD') + ' 00:00:00'
+					}else{
+						newVal = ''
 					}
-					this.expertForm.birth = val;
+					this.expertForm.birth = newVal;
 				}
 			}
 		},
@@ -111,13 +151,13 @@
 						vm.provinces = res.data
 					}
 				})
-//				publicService.fetchCity(this.expertForm.province)
-//				.then((res) => {
-//					if(res.success){
-//						vm.cities = res.data
-//					}
-//				})
-			}
+				publicService.fetchConstant()
+				.then((res) => {
+					if(res.success){
+						vm.sex = res.data.object.dict.SEX
+					}
+				})
+			},
 		},
 		watch:{
 			'expertForm.province':function(value){
@@ -132,6 +172,8 @@
 		},
 		components: {
 			AppContent,
+			ButtonGroup,
+			InputGroup,
 //			QueryGroup,
 //			ControlGroup,
 //			SuiSelect,
@@ -150,5 +192,13 @@
 	}
 	.el-form--inline .el-form-item{
 		    margin-right: 0px;
+	}
+</style>
+<style>
+	.el-form-item.category .el-form-item__label{
+		display: table-cell;
+	}
+	.el-form-item.category .el-form-item__content{
+		display: table-cell;
 	}
 </style>

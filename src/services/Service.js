@@ -43,6 +43,12 @@ class PublicService {
 			method: 'get',
 		})
 	}
+	fetchConstant () {
+		return axios({
+			url: '/dict/constant',
+			method: 'get',
+		})
+	}
 }
 
 class LoginService {

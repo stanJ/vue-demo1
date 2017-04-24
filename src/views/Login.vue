@@ -114,7 +114,6 @@
 					this.signIn();
 				}
 				this.isValid = false;
-				console.log(this.isValid)
 			}
 		}
 	}

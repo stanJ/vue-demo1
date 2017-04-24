@@ -209,7 +209,6 @@
 				console.log(row)
 			},
 			modify (index,row) {
-				console.log(row.tid)
 				router.push({
 					name: 'resource_modify',
 					params: {
