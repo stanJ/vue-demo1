@@ -63,9 +63,39 @@
 				<el-form-item label="其他" prop="otherCategory">
 					<el-input v-model="expertForm.otherCategory"></el-input>
 				</el-form-item>
-				<el-form-item label="社会职务" prop="socialFunction">
+				<el-form-item label="社会职务" prop="socialFunction" class="item-social-function">
 					<input-group v-model="expertForm.socialFunction"></input-group>
 				</el-form-item>
+				<el-form-item label="专家备注" prop="comment">
+					<el-input v-model="expertForm.comment" type="textarea" :rows="4" style="width: 490px;"></el-input>
+				</el-form-item>
+				<el-form-item label="上传附件" class="item-file">
+					<el-form-item prop="fileName">
+						<el-input v-model="expertForm.fileName"></el-input>
+					</el-form-item>
+					<el-form-item prop="filePath">
+						<el-upload 
+							:action="baseUrl+'/m/userExtend/fileUpload'"
+							:show-file-list="false"
+							:on-success="handleSuccess"
+							:on-error="handleError"
+							:on-progress="handleProgress"
+							:before-upload="handleBeforeUpload">
+							<input type="hidden" v-model="expertForm.filePath"/>
+							
+							<el-button slot="trigger" size="small">点击上传</el-button>
+							
+						</el-upload>
+					</el-form-item>
+					<el-form-item>
+						<el-progress type="circle" :percentage="percentage" :width="35" :stroke-width="2" :status="status" v-if="percentage>0"></el-progress>
+					</el-form-item>
+					<el-form-item>
+						<el-button size="small" type="danger" @click="deleteFile">删除</el-button>
+					</el-form-item>
+					
+				</el-form-item>
+				<el-button type="primary" class="bs-btn" @click="submitForm('expertForm')">保存</el-button>
 			</el-form>
 		
 		</div>
@@ -77,13 +107,9 @@
 	import AppContent from '@/views/AppContent'
 	import ButtonGroup from '@/components/ButtonGroup'
 	import InputGroup from '@/components/InputGroup'
-//	import QueryGroup from '@/components/QueryGroup'
-//	import ControlGroup from '@/components/ControlGroup'
-//	import SuiSelect from '@/components/SuiSelect'
-//	import LabelGroup from '@/components/LabelGroup'
-//	import TableColumn from '@/components/TableColumn'
 	import { resourceService, publicService } from '@/services/Service'
-//	import Util from '@/lib/util/util'
+	import {api} from '@/services/axios/config'
+	
 	export default {
 		name:'resource-modify',
 		data () {
@@ -101,10 +127,16 @@
 					category: '',
 					otherCategory: '',
 					socialFunction: '',
+					comment: '',
+					fileName: '',
+					filePath: '',
 				},
 				provinces: [],
 				cities: [],
 				sex: {},
+				baseUrl: api.baseUrl,
+				percentage: 0,
+				status: ''
 			}
 		},
 		computed: {
@@ -158,6 +190,50 @@
 					}
 				})
 			},
+			handleSuccess (res,file,fileList) {
+				this.expertForm.fileName = file.name;
+				this.expertForm.filePath = res.object.filePath;
+				this.status = 'success'
+//				console.log(res)
+//				console.log(file.name)
+//				console.log(fileList)
+			},
+			handleError (err,file,fileList) {
+//				console.log('err '+res)
+//				console.log('err-file '+file)
+//				console.log('err-fileList '+fileList)
+			},
+			handleBeforeUpload (file) {
+//				console.log(file)
+			},
+			handleProgress (e,file,fileList) {
+				this.percentage = parseInt(e.percent);
+			},
+			deleteFile () {
+				this.expertForm.fileName = ''
+				this.expertForm.filePath = ''
+				this.percentage = 0
+			},
+			submitForm (formName) {
+				var vm = this;
+				this.$refs[formName].validate((valid) => {
+					if(valid){
+						var params = JSON.parse(JSON.stringify(vm.expertForm))
+						return false;
+						resourceService.updateExpert(params)
+						.then((res) => {
+							if(res.success){
+								vm.$message({
+									message: '保存成功',
+									type: 'success'
+								})
+							}
+						})
+					}else{
+						return false;
+					}
+				})
+			}
 		},
 		watch:{
 			'expertForm.province':function(value){
@@ -201,4 +277,19 @@
 	.el-form-item.category .el-form-item__content{
 		display: table-cell;
 	}
+	.el-form-item.item-social-function{
+		display: block;
+	}
+	.el-form-item.item-social-function .el-form-item__content{
+		display: block;
+		margin-left: 68px;
+	}
+	.el-form-item.item-file{
+		display: block;
+	}
+	.bs-btn{
+		width: 132px;
+		margin-left: 80px;
+	}
+	
 </style>

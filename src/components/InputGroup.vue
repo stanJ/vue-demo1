@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<div v-for="(item,index) in socialFunctionAry"
+		<div v-for="(item,index) in socialFunctionAry" class="input-item"
 			:key="index">
 			<span>{{index+1}}</span>
-			<el-input v-model="item.value"></el-input>
+			<el-input v-model="item.value" ></el-input>
 		</div>
 	</div>
 </template>
@@ -14,18 +14,18 @@
 		props: ['value',],
 		data () {
 			return {
-				socialFunctionAry: []
+				socialFunctionAry: [{value:''}]
 			}
 		},
-		methods: {
-		},
 		watch: {
-			socialFunctionAry (val) {
-				console.log(val)
-				var str = JSON.stringify(val.map(function(x){
-					return x.value
-				}))
-				this.$emit('input',str)
+			socialFunctionAry: {
+				handler(val,oldVal) {
+					var str = JSON.stringify(val.map(function(x){
+						return x.value
+					}))
+					this.$emit('input',str)
+					},
+				deep: true
 			},
 			value (val) {
 				if(val){
@@ -41,5 +41,8 @@
 	}
 </script>
 
-<style>
+<style scoped="scoped">
+	.input-item{
+		margin-bottom: 5px;
+	}
 </style>

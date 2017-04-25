@@ -28,6 +28,13 @@ class ResourceService {
 			}
 		})
 	}
+	updateExpert (params) {
+		return axios({
+			url: '/m/expert/updateExpert',
+			method: 'post',
+			params: params
+		})
+	}
 }
 
 class PublicService {
