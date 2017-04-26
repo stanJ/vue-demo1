@@ -9,7 +9,7 @@
 		<div slot="mainTitle" class="bszk-title">资源修改</div>
 		<div slot="content" class="bszk-block clearfix">
 			<div class="bszk-title-sm">基本信息</div>
-			<el-form :inline="true" :model="expertForm" ref="expertForm" label-width="80px">
+			<el-form :inline="true" :model="expertForm" :rules="rules" ref="expertForm" label-width="85px">
 				<el-form-item label="专家名称" prop="name">
 					<el-input v-model="expertForm.name"></el-input>
 				</el-form-item>
@@ -130,13 +130,19 @@
 					comment: '',
 					fileName: '',
 					filePath: '',
+					tid: '',
 				},
 				provinces: [],
 				cities: [],
 				sex: {},
 				baseUrl: api.baseUrl,
 				percentage: 0,
-				status: ''
+				status: '',
+				rules: {
+					name: [
+						{required: true,message: '请填写',trigger: 'blur'}
+					]
+				}
 			}
 		},
 		computed: {
@@ -174,7 +180,10 @@
 				})
 				.then((res) => {
 					if(res.success){
-						vm.expertForm = res.data.object.content[0]
+						for(var key in vm.expertForm){
+							vm.expertForm[key] = res.data.object.content[0][key]
+						}
+//						vm.expertForm = res.data.object.content[0]
 					}
 				})
 				publicService.fetchProvince()
@@ -219,7 +228,6 @@
 				this.$refs[formName].validate((valid) => {
 					if(valid){
 						var params = JSON.parse(JSON.stringify(vm.expertForm))
-						return false;
 						resourceService.updateExpert(params)
 						.then((res) => {
 							if(res.success){
@@ -282,14 +290,14 @@
 	}
 	.el-form-item.item-social-function .el-form-item__content{
 		display: block;
-		margin-left: 68px;
+		margin-left: 73px;
 	}
 	.el-form-item.item-file{
 		display: block;
 	}
 	.bs-btn{
 		width: 132px;
-		margin-left: 80px;
+		margin-left: 85px;
 	}
 	
 </style>
