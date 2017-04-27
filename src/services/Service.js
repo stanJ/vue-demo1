@@ -35,6 +35,23 @@ class ResourceService {
 			params: params
 		})
 	}
+	fetchAssistant (params) {
+		return axios({
+			url: '/m/assistant/findAssistantEQStatusPage',
+			method: 'post',
+			params: Util.formatQueryParams(params)
+		})
+	}
+	deleteAssistant (tid) {
+		return axios({
+			url: '/m/assistant/operateAssistantById',
+			method: 'post',
+			params: {
+				modelId:tid,
+				status:3
+			}
+		})
+	}
 }
 
 class PublicService {

@@ -97,7 +97,7 @@
 				</el-form-item>
 				<el-button type="primary" class="bs-btn" @click="submitForm('expertForm')">保存</el-button>
 			</el-form>
-		
+			<assistant-table :assistant-data="assistantData" @deleteRow="loadAssistant"></assistant-table>
 		</div>
 	</app-content>
 </template>
@@ -107,6 +107,7 @@
 	import AppContent from '@/views/AppContent'
 	import ButtonGroup from '@/components/ButtonGroup'
 	import InputGroup from '@/components/InputGroup'
+	import AssistantTable from '@/components/AssistantTable'
 	import { resourceService, publicService } from '@/services/Service'
 	import {api} from '@/services/axios/config'
 	
@@ -142,7 +143,8 @@
 					name: [
 						{required: true,message: '请填写',trigger: 'blur'}
 					]
-				}
+				},
+				assistantData: [],
 			}
 		},
 		computed: {
@@ -196,6 +198,21 @@
 				.then((res) => {
 					if(res.success){
 						vm.sex = res.data.object.dict.SEX
+					}
+				})
+				this.loadAssistant();
+			},
+			loadAssistant () {
+				var vm = this;
+				var jsonFilter = {
+					search_EQ_expertId:this.$route.params.tid,
+				}
+				resourceService.fetchAssistant({
+					jsonFilter: JSON.stringify(jsonFilter)
+				})
+				.then((res) => {
+					if(res.success){
+						vm.assistantData = res.data.object.content
 					}
 				})
 			},
@@ -258,11 +275,7 @@
 			AppContent,
 			ButtonGroup,
 			InputGroup,
-//			QueryGroup,
-//			ControlGroup,
-//			SuiSelect,
-//			LabelGroup,
-//			TableColumn
+			AssistantTable,
 		}
 	}
 </script>
